@@ -479,8 +479,8 @@ directly with the ``number`` argument::
                 raise forms.ValidationError(self.error_message % number)
 
 
-Joining strings: ``string_concat()``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Joining strings: ``string_concat()`` and ``string_format()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Standard Python string joins (``''.join([...])``) will not work on lists
 containing lazy translation objects. Instead, you can use
@@ -498,6 +498,33 @@ result is included in a string. For example::
 In this case, the lazy translations in ``result`` will only be converted to
 strings when ``result`` itself is used in a string (usually at template
 rendering time).
+
+.. versionadded:: 1.11
+
+    The string_format() function was added.
+
+For more advanced string formatting with lazy translations you can use
+:func:`django.utils.translation.string_format()`. First argument should
+be the string to be formatted. For example useful when translating
+urls in urls.py::
+
+    from django.utils.translation import string_format
+    from django.utils.translation import pgettext_lazy
+    ...
+    t = {
+        'auction': pgettext_lazy('Url', 'auction'),
+        'star': pgettext_lazy('Url', 'star')
+    }
+
+    urlpatterns = [
+        url(string_format(r'{auction}/(?P<pk>\d+)/{star}/$', **t),
+            StarAuction.as_view()
+        )
+    ]
+
+Syntax is similar to the standard Python str.format() method
+(see https://docs.python.org/3/library/string.html#formatstrings for
+documentation and examples).
 
 Other uses of lazy in delayed translations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

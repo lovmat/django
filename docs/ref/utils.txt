@@ -1090,6 +1090,11 @@ For a complete discussion on the usage of the following see the
     Lazy variant of string concatenation, needed for translations that are
     constructed from multiple parts.
 
+.. function:: string_format(format, *args, **kwargs)
+
+    Lazy variant of string format, needed for translations that are
+    constructed from multiple parts.
+
 .. function:: activate(language)
 
     Fetches the translation object for a given language and activates it as

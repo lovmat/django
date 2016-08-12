@@ -227,6 +227,16 @@ def _string_concat(*strings):
     return ''.join(force_text(s) for s in strings)
 string_concat = lazy(_string_concat, six.text_type)
 
+def _string_format(string, *args, **kwargs):
+    """
+    Lazy variant of string format, needed for translations that are
+    constructed from multiple parts.
+    """
+    return string.format(
+        *(force_text(v) for v in args),
+        **{k: force_text(v) for k, v in kwargs.items()}
+    )
+string_format = lazy(_string_format, six.text_type)
 
 def get_language_info(lang_code):
     from django.conf.locale import LANG_INFO
